@@ -1,25 +1,11 @@
-/* Load Bitcount Prop Single Ink font */
 @font-face {
   font-family: 'Anton';
   src: url('/fonts/Anton-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-/* .container{
-  position: relative;
-  left: 8%;
-  width: 60vw;
-  height: 40vh;
-  border: 2px solid green;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-} */
-/* Overlay container */
 .text-overlay {
   margin-top: 100px;
- /* border: 2px solid red; */
   position: relative;
   top: 0;
   left: 45%;
