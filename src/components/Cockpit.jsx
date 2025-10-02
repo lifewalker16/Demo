@@ -4,10 +4,22 @@
   import { useSpring } from "@react-spring/three";
   import * as THREE from "three";
 
-  function CockpitModel() {
-    const { scene } = useGLTF("/models/cockpit/cockpit.glb");
-    return <primitive object={scene} scale={0.5} />;
-  }
+function CockpitModel({ wobble }) {
+  const { scene } = useGLTF("/models/cockpit/cockpit.glb");
+  const ref = React.useRef();
+
+  useFrame(({ clock }) => {
+    if (wobble) {
+      const t = clock.getElapsedTime();
+      // small wobble on x & y rotation
+      ref.current.rotation.x = Math.sin(t * 20) * 0.005; 
+      ref.current.rotation.y = Math.sin(t * 25) * 0.005;
+    }
+  });
+
+  return <primitive ref={ref} object={scene} scale={0.5} />;
+}
+
 
   function CockpitCamera({ onAnimationComplete,zoomOut,onZoomOutComplete }) {   // <-- accept prop
   const { camera } = useThree();
@@ -50,7 +62,7 @@
   return null;
 }
 
-export default function Cockpit({ onAnimationComplete ,zoomOut,onZoomOutComplete }) {   // <-- accept from App
+export default function Cockpit({ onAnimationComplete ,zoomOut,onZoomOutComplete,wobble }) {   // <-- accept from App
   return (
     <Canvas camera={{ fov: 60, near: 0.1, far: 1000 }}
      gl={{alpha:true}}
@@ -58,7 +70,7 @@ export default function Cockpit({ onAnimationComplete ,zoomOut,onZoomOutComplete
     >
       <ambientLight intensity={0.6} />
       <directionalLight position={[5, 5, 5]} intensity={1} />
-      <CockpitModel />
+      <CockpitModel wobble={wobble}/>
       <CockpitCamera 
       onAnimationComplete={onAnimationComplete}
       onZoomOutComplete={onZoomOutComplete}

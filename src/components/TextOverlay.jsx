@@ -11,7 +11,7 @@
           deletingSpeed={50}
           showCursor={true}
           cursorCharacter="|"
-          textColors={["Black"]}   
+          textColors={["white"]}   
         />
       </div>
     );
