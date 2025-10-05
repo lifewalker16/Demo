@@ -7,7 +7,7 @@ import './TextType.css';
 const TextType = ({
   text,
   as: Component = 'div',
-  typingSpeed = 50,
+  typingSpeed = 20,
   initialDelay = 0,
   pauseDuration = 2000,
   deletingSpeed = 30,
@@ -21,6 +21,7 @@ const TextType = ({
   textColors = [],
   variableSpeed,
   onSentenceComplete,
+  onCharTyped,
   startOnVisible = false,
   reverseMode = false,
   ...props
@@ -105,19 +106,39 @@ const TextType = ({
           }, deletingSpeed);
         }
       } else {
-        if (currentCharIndex < processedText.length) {
-          timeout = setTimeout(
-            () => {
-              setDisplayedText(prev => prev + processedText[currentCharIndex]);
-              setCurrentCharIndex(prev => prev + 1);
-            },
-            variableSpeed ? getRandomSpeed() : typingSpeed
-          );
-        } else if (textArray.length > 1) {
-          timeout = setTimeout(() => {
-            setIsDeleting(true);
-          }, pauseDuration);
+      if (currentCharIndex < processedText.length) {
+        timeout = setTimeout(
+          () => {
+            setDisplayedText(prev => {
+              const newText = prev + processedText[currentCharIndex];
+              if (onCharTyped) onCharTyped(processedText[currentCharIndex], currentTextIndex); // 🔔 fire here
+              return newText;
+            });
+            setCurrentCharIndex(prev => prev + 1);
+          },
+          variableSpeed ? getRandomSpeed() : typingSpeed
+        );
+      }
+       else if (textArray.length > 1) {
+          if (currentTextIndex === textArray.length - 1 && !loop) {
+            // ✅ Last item, don't delete — just stop here
+            if (onSentenceComplete) {
+              onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+            }
+            return; 
+          } else {
+            timeout = setTimeout(() => {
+              setIsDeleting(true);
+            }, pauseDuration);
+          }
         }
+        else {
+          // ✅ Single text, no loop: fire callback at the end
+          if (!loop && onSentenceComplete) {
+            onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+          }
+        }
+
       }
     };
 

@@ -1,10 +1,11 @@
 @font-face {
   font-family: 'Anton';
-  src: url('/fonts/Anton-Regular.ttf') format('truetype');
+  src: url('/fonts/MinecraftBold-nMK1.otf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 .text-overlay {
+  /* border: 2px solid red; */
   margin-top: 100px;
   position: relative;
   top: 0;
@@ -19,9 +20,9 @@
 
   text-align: center;
   font-family: 'Anton', sans-serif;
-  font-size: 4rem;
+  font-size: 2.9rem;
   color: white; 
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 1 );
 
 }
 
